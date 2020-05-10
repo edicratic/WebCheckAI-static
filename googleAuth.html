@@ -58,12 +58,26 @@
                     <div class="hero-inner" id="mainPageBit">
                         <h1 class="hero-title h2-mobile mt-0 is-revealing">Welcome to WebCheck!</h1>
                         <p class="hero-paragraph" style="margin-bottom:1px !important;">Get Ready to Start Browsing Like a Pro.</p>
+                        <br/>
                         <div id="authResult">
-                            <br/>
                             <div class="loader"></div>
                             <p class="hero-paragraph" style="margin-bottom:1px !important;">Logging you in . . .</p>
                         </div>
+                    </div>
+                </div>
+            </section>
+            <section class="features section text-center">
+                <div class="container">
+                    <div class="features-inner section-inner">
+                        <div class="features-wrap">
+                            <div class="feature">
+                                <p class="hero-cta"><a class="button button-secondary button-shadow" href="/index.html">WebCheck AI Home</a></p>
 
+                            </div>
+                            <div class="feature">
+                                    <p class="hero-cta"><a class="button button-secondary button-shadow" href="/support.html">WebCheck Support</a></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -92,8 +106,7 @@
             if(urlParams.get("error")){
                 let error = urlParams.get("error");
                 authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong ...</p>
-                                        <p class="hero-paragraph" style="margin-bottom:1px !important;">Error: ${error}</p>`;
-                
+                                        <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">Error: ${error}</p>`;
             }else if(urlParams.get("id_token")){
                 getToken(urlParams.get("id_token"), "https://webcheck-api.edicratic.com").then(res => {
                     if(res.status === 200){
@@ -101,12 +114,12 @@
                     }else{
                         res.text().then((text) => {
                             authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong ...</p>
-                                                    <p class="hero-paragraph" style="margin-bottom:1px !important;">Error: ${text}</p>`;
+                                                    <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">Error: ${text}</p>`;
                         });
                     }
                 }).catch(err => {
                     authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Failed to Reach Edicratic Servers. Please Check Your Network and Try Again.</p>
-                                        <p class="hero-paragraph" style="margin-bottom:1px !important;">Error: ${err}</p>`;
+                                        <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">${err}</p>`;
                 });
             }
         }
