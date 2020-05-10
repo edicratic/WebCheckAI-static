@@ -121,6 +121,8 @@
                     authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Failed to Reach Edicratic Servers. Please Check Your Network and Try Again.</p>
                                         <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">${err}</p>`;
                 });
+            }else{
+                authResult.innerHTML = "Can't Log You in if You Aren't Credentialed";
             }
         }
     </script>
