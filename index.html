@@ -17,6 +17,31 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:400,400i|PT+Serif:700" rel="stylesheet">
     <link rel="stylesheet" href="dist/css/style.css">
     <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+    <style>
+        .collapsible {
+            cursor: pointer;
+        }
+
+        .collapsible:hover {
+            background-color: silver;
+        }
+
+        .collapsible:after {
+            content: '\002B';
+            float: right;
+            margin-left: 5px;
+        }
+
+        .active:after {
+            content: "\2212";
+        }
+
+        .content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+    </style>
 </head>
 <body class="is-boxed has-animations">
     <div class="body-wrap boxed-container">
@@ -95,6 +120,56 @@
                 </div>
             </section -->
 
+            <section class="features-extended section">
+                <div class="container">
+                    <div class="features-extended-inner section-inner has-top-divider">
+                        <div class="features-extended-header text-center">
+                            <div class="container-sm">
+                                <h2 class="section-title mt-0 collapsible">FAQ</h2>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="feature-extended">
+                                <div class="feature-extended-body">
+                                    <h4 class="mt-0">How do I log in?</h4>
+                                    <p>If you are ever logged out, simply click the extension icon at the top right of Chrome and click the login button. If login ever fails, or you get a "You Denied Access" message, simply try again. Most login issues are due to taking too long to enter your information or typing in the wrong password.</p>
+                                </div>
+                            </div>
+                            <div class="feature-extended">
+                                <div class="feature-extended-body">
+                                    <h4 class="mt-0">What is a Whitelist and how do I manage it?</h4>
+                                    <p>A Whitelist is a list of sites where our extension will run automatically. To add or remove a site from your whitelist, you can click the extension icon in Chrome, and toggle the "Always WebCheck this Page" checkbox. To manage your full Whitelist, click "Your Websites" in the extension box.</p>
+                                </div>
+                            </div>
+                            <div class="feature-extended">
+                                <div class="feature-extended-body">
+                                    <h4 class="mt-0">What is Highlight Lookup?</h4>
+                                    <p>Sometimes, we miss a word. Sometimes you don't want to run a full WebCheck. With Highlight Lookup enabled, whenever you highlight a word or phrase, our extension will provide you the informational tooltip you need.</p>
+                                </div>
+                            </div>
+                            <div class="feature-extended">
+                                <div class="feature-extended-body">
+                                    <h4 class="mt-0">How do I turn off Highlight Lookup or Auto-WebCheck?</h4>
+                                    <p>To disable or enable features, open the exentension box by clicking the WebCheck icon in Chrome and hit the toggle switch next to the corresponding text.</p>
+                                </div>
+                            </div>
+                            <div class="feature-extended">
+                                <div class="feature-extended-body">
+                                    <h4 class="mt-0">How do I suggest features or report a bug?</h3>
+                                    <p>You can leave suggestions by clicking the extension icon at the top right of Chrome, followed by clicking "Anything Wrong?" to bring up the reporting form.</p>
+                                </div>
+                            </div>
+                            <div class="feature-extended">
+                                <div class="feature-extended-body">
+                                    <h4 class="mt-0">What do I do if I need more help?</h3>
+                                    <p>Just fill out a form on our <a href="/support.html">support page</a> and we'll get to helping you straight away.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section class="features section text-center">
                 <div class="container">
                     <div class="features-inner section-inner has-top-divider">
@@ -162,55 +237,6 @@
                     </div>
                 </div>
             </section>
-            <section class="features-extended section">
-                <div class="container">
-                    <div class="features-extended-inner section-inner has-top-divider">
-                        <div class="features-extended-header text-center">
-                            <div class="container-sm">
-                                <h2 class="section-title mt-0">FAQ</h2>
-                            </div>
-                        </div>
-                        <div class="feature-extended">
-                            <div class="feature-extended-body">
-                                <h4 class="mt-0">How do I log in?</h4>
-                                <p>If you are ever logged out, simply click the extension icon at the top right of Chrome and click the login button. If login ever fails, or you get a "You Denied Access" message, simply try again. Most login issues are due to taking too long to enter your information or typing in the wrong password.</p>
-                            </div>
-                        </div>
-                        <div class="feature-extended">
-                            <div class="feature-extended-body">
-                                <h4 class="mt-0">What is a Whitelist and how do I manage it?</h4>
-                                <p>A Whitelist is a list of sites where our extension will run automatically. To add or remove a site from your whitelist, you can click the extension icon in Chrome, and toggle the "Always WebCheck this Page" checkbox. To manage your full Whitelist, click "Your Websites" in the extension box.</p>
-                            </div>
-                        </div>
-                        <div class="feature-extended">
-                            <div class="feature-extended-body">
-                                <h4 class="mt-0">What is Highlight Lookup?</h4>
-                                <p>Sometimes, we miss a word. Sometimes you don't want to run a full WebCheck. With Highlight Lookup enabled, whenever you highlight a word or phrase, our extension will provide you the informational tooltip you need.</p>
-                            </div>
-                        </div>
-                        <div class="feature-extended">
-                            <div class="feature-extended-body">
-                                <h4 class="mt-0">How do I turn off Highlight Lookup or Auto-WebCheck?</h4>
-                                <p>To disable or enable features, open the exentension box by clicking the WebCheck icon in Chrome and hit the toggle switch next to the corresponding text.</p>
-                            </div>
-                        </div>
-                        <div class="feature-extended">
-                            <div class="feature-extended-body">
-                                <h4 class="mt-0">How do I suggest features or report a bug?</h3>
-                                <p>You can leave suggestions by clicking the extension icon at the top right of Chrome, followed by clicking "Anything Wrong?" to bring up the reporting form.</p>
-                            </div>
-                        </div>
-                        <div class="feature-extended">
-                            <div class="feature-extended-body">
-                                <h4 class="mt-0">What do I do if I need more help?</h3>
-                                <p>Just fill out a form on our <a href="/support.html">support page</a> and we'll get to helping you straight away.</p>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </section>
-            
             <section class="features-extended section">
                 <div class="container">
                     <div class="features-extended-inner section-inner has-top-divider">
@@ -459,5 +485,17 @@
         </footer>
     </div>
     <script src="dist/js/main.min.js"></script>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        coll[0].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content =  document.getElementsByClassName("content")[0];
+            if (content.style.maxHeight){
+              content.style.maxHeight = null;
+            } else {
+              content.style.maxHeight = content.scrollHeight + "px";
+            } 
+          });
+        </script>
 </body>
 </html>
