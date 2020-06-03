@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WebCheck AI</title>
+    <link rel="icon" href="img/icon.ico">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400i|PT+Serif:700" rel="stylesheet">
+    <link rel="stylesheet" href="dist/css/style.css">
+    <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+</head>
+<style>
+    .loader {
+      border:  1vw solid #f3f3f3;
+      border-radius: 80%;
+      border-top: 1vw  solid #3498db;
+      width: 5vw;
+      height: 5vw;
+      margin: 0 auto;
+      -webkit-animation: spin 2s linear infinite; /* Safari */
+      animation: spin 2s linear infinite;
+    }
+    
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+</style>
+<body class="is-boxed has-animations">
+    <div class="body-wrap boxed-container">
+        <header class="site-header">
+            <div class="container">
+                <div class="site-header-inner">
+                    <div class="brand header-brand">
+                        <h1 class="m-0">
+                            <a href="/index.html">
+                                <svg width="40" height="40" viewBox="0 0 40 40" xmlns="https://www.w3.org/2000/svg">
+                                    <title>WebCheck AI</title>
+                                    <circle id="chr" class="medium" cx="16" cy="16" fill="None" r="23" stroke="silver" stroke-width="4%" />
+                                    <image x="0%" y="0%" width="32" height="32"  xlink:href="img/logo128.png"></image>
+                                </svg>
+                              </a>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <section class="hero text-light text-center">
+                <div class="container-sm">
+                    <div class="hero-inner" id="mainPageBit">
+                        <h1 class="hero-title h2-mobile mt-0 is-revealing">Welcome to WebCheck!</h1>
+                        <p class="hero-paragraph" style="margin-bottom:1px !important;">Get Ready to Start Browsing Like a Pro.</p>
+                        <br/>
+                        <div id="authResult">
+                            <div class="loader"></div>
+                            <p class="hero-paragraph" style="margin-bottom:1px !important;">Logging you in . . .</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="features section text-center">
+                <div class="container">
+                    <div class="features-inner section-inner">
+                        <div class="features-wrap">
+                            <div class="feature">
+                                <p class="hero-cta"><a class="button button-secondary button-shadow" href="/index.html">WebCheck AI Home</a></p>
+
+                            </div>
+                            <div class="feature">
+                                    <p class="hero-cta"><a class="button button-secondary button-shadow" href="/support.html">WebCheck Support</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="dist/js/main.min.js"></script>
+    <script>
+        function getToken(id_token, base_url){
+            return new Promise((resolve, reject) => {
+               let params =  {method: 'post',
+                                headers: {
+                                "Content-type": "application/json"
+                                },
+                                credentials: 'include',
+                                body: JSON.stringify({body:{oauth2_identifier:{type: "google", id_token: id_token}}}),
+                            };
+                console.log(params);
+                fetch(base_url + "/token",params).then(res => {
+                    resolve(res);
+                }).catch(err => {
+                    reject(err);
+                });
+        })};
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log(window.location);
+        let url = window.location.href;
+        if (url.includes("#")){
+            window.location.href = url.replace("#", "?");
+        }else{
+            let authResult = document.getElementById("authResult");
+            if(urlParams.get("error")){
+                let error = urlParams.get("error");
+                authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong ...</p>
+                                        <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">Error: ${error}</p>`;
+            }else if(urlParams.get("id_token")){
+                getToken(urlParams.get("id_token"), "https://webcheck-api.edicratic.com").then(res => {
+                    if(res.status === 200){
+                        authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Success!!! You can start using the extension</p>`;
+                    }else{
+                        res.text().then((text) => {
+                            authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong ...</p>
+                                                    <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">Error: ${text}</p>`;
+                        });
+                    }
+                }).catch(err => {
+                    authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Failed to Reach Edicratic Servers. Please Check Your Network and Try Again.</p>
+                                        <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">${err}</p>`;
+                });
+            }else{
+                authResult.innerHTML = "Can't Log You in if You Aren't Credentialed";
+            }
+        }
+    </script>
+</body>
+</html>

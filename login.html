@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-signin-client_id" content="894173246263-vm4prim5feel2kacspmbjk9ped4o5ed6.apps.googleusercontent.com">
     <title>WebCheck AI</title>
     <link rel="icon" href="img/icon.ico">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,400i|PT+Serif:700" rel="stylesheet">
@@ -32,6 +33,10 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+    .authButtons {
+        display: inline-flex;
+    }
+
 </style>
 <body class="is-boxed has-animations">
     <div class="body-wrap boxed-container">
@@ -57,11 +62,12 @@
                 <div class="container-sm">
                     <div class="hero-inner" id="mainPageBit">
                         <h1 class="hero-title h2-mobile mt-0 is-revealing">Welcome to WebCheck!</h1>
-                        <p class="hero-paragraph" style="margin-bottom:1px !important;">Get Ready to Start Browsing Like a Pro.</p>
+                        <p class="hero-paragraph" style="margin-bottom:1px !important;">Log in to Start Browsing Like a Pro.</p>
                         <br/>
                         <div id="authResult">
-                            <div class="loader"></div>
-                            <p class="hero-paragraph" style="margin-bottom:1px !important;">Logging you in . . .</p>
+                        </div>
+                        <div id="authButtons" class="authButtons">
+                            <div id="my-signin2"></div>
                         </div>
                     </div>
                 </div>
@@ -85,46 +91,67 @@
     </div>
     <script src="dist/js/main.min.js"></script>
     <script>
-        function getToken(id_token, base_url){
-            return new Promise((resolve, reject) => {
-                let params =  {method:"POST", body: JSON.stringify({body:{oauth2_identifier:{type: "google", id_token: id_token}}}),
-                                'Content-Type': 'application/json', mode: "cors"};
-                fetch(base_url + "/token",params).then(res => {
-                    resolve(res);
-                }).catch(err => {
-                    reject(err);
-                });
-            });
-        }
-        const urlParams = new URLSearchParams(window.location.search);
-        console.log(window.location);
-        let url = window.location.href;
-        if (url.includes("#")){
-            window.location.href = url.replace("#", "?");
-        }else{
+
+        function onSuccess(res){
             let authResult = document.getElementById("authResult");
-            if(urlParams.get("error")){
-                let error = urlParams.get("error");
-                authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong ...</p>
-                                        <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">Error: ${error}</p>`;
-            }else if(urlParams.get("id_token")){
-                getToken(urlParams.get("id_token"), "https://q329xt0jt9.execute-api.us-east-1.amazonaws.com/default").then(res => {
-                    if(res.status === 200){
-                        authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Success!!! You can start using the extension</p>`;
-                    }else{
-                        res.text().then((text) => {
-                            authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong ...</p>
-                                                    <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">Error: ${text}</p>`;
-                        });
-                    }
-                }).catch(err => {
-                    authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Failed to Reach Edicratic Servers. Please Check Your Network and Try Again.</p>
-                                        <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">${err}</p>`;
-                });
+            if(res.status === 200){
+                    authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Success!!! You can start using the extension</p>`;
             }else{
-                authResult.innerHTML = "Can't Log You in if You Aren't Credentialed";
+                res.text().then((text) => {
+                    onFailure(text);
+                });
             }
         }
-    </script>
+
+        function onFailure(err){
+            console.log("failed");
+            document.getElementById("authButtons").setAttribute('display', 'inline-flex');
+            let authResult = document.getElementById("authResult");
+            authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong . . .</p>
+                                        <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">${err}</p>`;
+        }
+
+        function runRequest(params){
+            let authResult = document.getElementById("authResult");
+            authResult.innerHTML = `<div class="loader"></div>
+                                    <p class="hero-paragraph" style="margin-bottom:1px !important;">Logging you in . . .</p>`
+            document.getElementById("authButtons").setAttribute('display', 'none');
+            fetch("https://webcheck-api-dev.edicratic.com/token",params).then(res => {
+                onSuccess(res);
+            }).catch(err => {
+                onFailure(err);
+            });
+        }
+
+        function onSuccessGoogle(googleUser) {
+          console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+          var id_token = googleUser.getAuthResponse().id_token;
+          let params =  {method: 'post',
+                                headers: {
+                                "Content-type": "application/json"
+                                },
+                                credentials: 'include',
+                                body: JSON.stringify({body:{oauth2_identifier:{type: "google", id_token: id_token}}}),
+                            };
+            runRequest(params);
+        }
+        function onFailureGoogle(error) {
+          console.log(error);
+          onFailure(error);
+        }
+        function renderButton() {
+          gapi.signin2.render('my-signin2', {
+            'scope': 'profile email',
+            'width': 240,
+            'height': 50,
+            'longtitle': true,
+            'theme': 'dark',
+            'onsuccess': onSuccessGoogle,
+            'onfailure': onFailureGoogle
+          });
+        }
+      </script>
+      <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
 </body>
 </html>
