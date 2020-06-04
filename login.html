@@ -105,18 +105,17 @@
 
         function onFailure(err){
             console.log("failed");
-            document.getElementById("authButtons").setAttribute('display', 'inline-flex');
+            document.getElementById("authButtons").style.display = 'inline-flex';
             let authResult = document.getElementById("authResult");
-            authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong . . .</p>
-                                        <p class="hero-paragraph" style="margin-bottom:1px !important; color: #ffd32ebf;">${err}</p>`;
+            authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong, Please Try Again</p>`;
         }
 
         function runRequest(params){
             let authResult = document.getElementById("authResult");
             authResult.innerHTML = `<div class="loader"></div>
                                     <p class="hero-paragraph" style="margin-bottom:1px !important;">Logging you in . . .</p>`
-            document.getElementById("authButtons").setAttribute('display', 'none');
-            fetch("https://webcheck-api-dev.edicratic.com/token",params).then(res => {
+            document.getElementById("authButtons").style.display = 'none';
+            fetch("https://webcheck-api.edicratic.com/issue-token",params).then(res => {
                 onSuccess(res);
             }).catch(err => {
                 onFailure(err);
