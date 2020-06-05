@@ -91,7 +91,7 @@
     </div>
     <script src="dist/js/main.min.js"></script>
     <script>
-
+        localStorage['authStatus'] = 'Logged Out';
         function onSuccess(res){
             let authResult = document.getElementById("authResult");
             if(res.status === 200) {
