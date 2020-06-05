@@ -100,5 +100,22 @@
         </footer>
     </div>
     <script src="dist/js/main.min.js"></script>
+    <script>
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('origin') === 'extension'){
+
+            let params =  { method:"POST", 
+                            body: JSON.stringify({body:{type: "uninstalled"}}),
+                            headers: {
+                                        "Content-type": "application/json"
+                                    },
+                            };
+
+            fetch("https://webcheck-api.edicratic.com/subscription-event", params);
+            window.history.replaceState(null, null, window.location.pathname);
+        }
+
+    </script>
 </body>
 </html>

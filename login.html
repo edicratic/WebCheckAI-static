@@ -94,9 +94,16 @@
 
         function onSuccess(res){
             let authResult = document.getElementById("authResult");
-            if(res.status === 200){
-                    authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Success!!! You can start using the extension</p>`;
-            }else{
+            if(res.status === 200) {
+                    authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Success!!! You can start using the extension</p><br/>`;
+                    let params =  { method:"post", 
+                                    body: JSON.stringify({body:{type: "login"}}),
+                                    headers: {
+                                        "Content-type": "application/json"
+                                    },
+                                  };
+                    fetch("https://webcheck-api.edicratic.com/subscription-event", params);
+            } else {
                 res.text().then((text) => {
                     onFailure(text);
                 });
@@ -107,7 +114,7 @@
             console.log("failed");
             document.getElementById("authButtons").style.display = 'inline-flex';
             let authResult = document.getElementById("authResult");
-            authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong, Please Try Again</p>`;
+            authResult.innerHTML = `<p class="hero-paragraph" style="margin-bottom:1px !important;">Something Went Wrong, Please Try Again</p><br/>`;
         }
 
         function runRequest(params){
